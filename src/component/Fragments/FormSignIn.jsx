@@ -1,24 +1,36 @@
-import Button from "../Elements/Button";
+import Logo from "../Elements/Logo";
+import LabeledInput from "../Elements/Labelinput"; // Perbaiki nama kelas menjadi LabeledInput (huruf kapital)
 import Checkbox from "../Elements/Checkbox";
-import LabeledInput from "../Elements/Labeledinput";
+import Button from "../Elements/Button";
 
 const FormSignIn = () => {
   return (
     <form action="">
-      <LabeledInput
-        label="Email address"
-        type="email"
-        placeholder="hello@example.com"
-        name="email"
-      />
-      <LabeledInput
-        label="Password"
-        type="password"
-        placeholder="*************"
-        name="password"
-      />
-      <Checkbox label="Keep me signed in" name="status" />
-      <Button variant="bg-primary w-full text-white">Login</Button>
+      <div className="mb-6">
+        <LabeledInput
+          label="Email address"
+          type="email"
+          placeholder="hello@example.com"
+          name="email"
+        />
+      </div>
+
+      <div className="mb-6">
+        <LabeledInput
+          label="Password"
+          type="password"
+          placeholder="*************"
+          name="password"
+        />
+      </div>
+
+      <div className="mb-3">
+        <Checkbox label="Keep me signed in" name="status" />
+      </div>
+
+      <Button variant="bg-primary w-full text-white" type="submit">
+        Login
+      </Button>
     </form>
   );
 };

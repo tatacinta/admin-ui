@@ -1,9 +1,8 @@
 import FormSignIn from "../component/Fragments/FormSignIn";
 import Authlayout from "../component/Layout/AuthLayout";
-
 const SignInPage = () => {
   return (
-    <Authlayout title="sign in">
+    <Authlayout type="sign in">
       <FormSignIn />
     </Authlayout>
   );
