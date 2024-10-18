@@ -1,4 +1,5 @@
 import FormSignIn from "../Fragments/FormSignIn";
+import { Link } from "react-router-dom";
 import Logo from "../Elements/Logo";
 
 const AuthLayout = (props) => {
@@ -83,10 +84,10 @@ const AuthLayout = (props) => {
               <span className="text-sm text-gray-03">
                 Already have an account?&nbsp;
               </span>
-              <a className="text-primary text-sm font-bold">Sign In Here</a>
+              <Link to="/login" className="text-primary text-sm font-bold">Sign In Here</Link>
             </>
           ) : (
-            <a className="text-primary text-sm font-bold">Create an account</a>
+            <Link to="/register" className="text-primary text-sm font-bold">Create an account</Link>
           )}
         </div>
         {/* Link end */}
