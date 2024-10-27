@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Logo from "../Elements/Logo";
 
 const AuthLayout = (props) => {
-  const { children, type } = props; // Add 'type' to props
+  const { children, type } = props; 
 
   return (
     <div className="flex justify-center min-h-screen items-center bg-special-mainBg">
@@ -15,9 +15,8 @@ const AuthLayout = (props) => {
 
         {/* Form start */}
         <div className="mt-16">
-          {/* Render FormSignIn */}
-         
-          {children}
+          {/* Render FormSignIn if type is 'sign in' */}
+          {type === "sign in" ? <FormSignIn /> : children}
         </div>
         {/* Form end */}
 
@@ -84,10 +83,14 @@ const AuthLayout = (props) => {
               <span className="text-sm text-gray-03">
                 Already have an account?&nbsp;
               </span>
-              <Link to="/login" className="text-primary text-sm font-bold">Sign In Here</Link>
+              <Link to="/login" className="text-primary text-sm font-bold">
+                Sign In Here
+              </Link>
             </>
           ) : (
-            <Link to="/register" className="text-primary text-sm font-bold">Create an account</Link>
+            <Link to="/register" className="text-primary text-sm font-bold">
+              Create an account
+            </Link>
           )}
         </div>
         {/* Link end */}
