@@ -84,3 +84,11 @@ const ExpensesPage = () => {
 };
 
 export default ExpensesPage;
+
+<Link
+  to="/expenses"
+  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-200"
+>
+  <i className="icon-class mr-3"></i>
+  Pengeluaran
+</Link>;
