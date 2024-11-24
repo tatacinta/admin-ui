@@ -9,6 +9,8 @@ import {
   faMoneyBillWave, // Added for Expenses
   faBullseye, // Added for Goals
   faCog, // Added for Settings
+  faUserCircle, // Icon for Profile Photo
+  faEllipsisV, // Icon for "More" (three dots)
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../Elements/Logo";
 
@@ -81,13 +83,25 @@ const Navbar = () => {
         </Link>
         <div className="border-b my-10 border-b-special-bg" />
         <div className="flex justify-between items-center">
-          <div className="mx-auto sm:mx-0">foto</div>
+          {/* Photo Icon */}
+          <div className="mx-auto sm:mx-0">
+            <FontAwesomeIcon
+              icon={faUserCircle}
+              className="text-white text-3xl"
+            />
+          </div>
           <div className="hidden sm:block text-center">
             Username
             <br />
             View Profile
           </div>
-          <div className="hidden sm:block">icon</div>
+          {/* More Options (Ellipsis) Icon */}
+          <div className="hidden sm:block">
+            <FontAwesomeIcon
+              icon={faEllipsisV}
+              className="text-white text-3xl"
+            />
+          </div>
         </div>
       </div>
     </nav>
