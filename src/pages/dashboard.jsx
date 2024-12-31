@@ -5,11 +5,42 @@ import bills from "../component/Data/bills";
 import expensesBreakdowns from "../component/Data/expense";
 import transactions from "../component/Data/transaction";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import CardBalance from "../component/Fragments/Dashboard/CardBalance";
+import CardStatistic from "../component/Fragments/Dashboard/CardStatistic";
+import CardGoal from "../component/Fragments/Dashboard/CardGoal";
 
 const tabs = ["all", "revenue", "expense"];
 
 const DashboardPage = () => {
   const [activeTab, setActiveTab] = useState("all");
+
+  // State untuk pagination Recent Transaction
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; // Menampilkan 4 transaksi per halaman
+
+  // Fungsi untuk mendapatkan data yang akan ditampilkan pada halaman tertentu
+  const indexOfLastTransaction = currentPage * itemsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - itemsPerPage;
+  const currentTransactions = transactions
+    .filter((transaction) => {
+      if (activeTab === "all") return true;
+      return transaction.type.toLowerCase() === activeTab;
+    })
+    .slice(indexOfFirstTransaction, indexOfLastTransaction);
+
+  const totalPages = Math.ceil(transactions.length / itemsPerPage);
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   const billCard = bills.map((bill) => (
     <div key={bill.id} className="lg:flex justify-between pt-3 pb-3">
@@ -54,76 +85,63 @@ const DashboardPage = () => {
     </div>
   ));
 
-  const transactionCard = transactions
-    .filter((transaction) => {
-      if (activeTab === "all") return true;
-      return transaction.type.toLowerCase() === activeTab;
-    })
-    .map((transaction) => (
-      <div key={transaction.id} className="flex justify-between my-6">
-        <div className="flex">
-          <div className="bg-special-bg px-3 rounded-lg flex flex-col place-content-center">
-            {/* Menggunakan tag <i> untuk menampilkan ikon FontAwesome */}
-            <i className={`fa ${transaction.icon} text-3xl text-primary`} />
-          </div>
-          <div className="ms-4">
-            <span className="text-xl font-bold">
-              {transaction.transactionName}
-            </span>
-            <br />
-            <span className="text-gray-02">{transaction.shopName}</span>
-          </div>
+  const transactionCard = currentTransactions.map((transaction) => (
+    <div key={transaction.id} className="flex justify-between my-6">
+      <div className="flex">
+        <div className="bg-special-bg px-3 rounded-lg flex flex-col place-content-center">
+          <i className={`fa ${transaction.icon} text-3xl text-primary`} />
         </div>
-        <div className="text-right">
-          <span className="text-xl font-bold text-gray-02">
-            ${transaction.amount}
+        <div className="ms-4">
+          <span className="text-xl font-bold">
+            {transaction.transactionName}
           </span>
           <br />
-          <span className="text-gray-02">{transaction.date}</span>
+          <span className="text-gray-02">{transaction.shopName}</span>
         </div>
       </div>
-    ));
+      <div className="text-right">
+        <span className="text-xl font-bold text-gray-02">
+          ${transaction.amount}
+        </span>
+        <br />
+        <span className="text-gray-02">{transaction.date}</span>
+      </div>
+    </div>
+  ));
 
   return (
     <MainLayout type="dashboard">
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <Card title="Total Balance">
-            <div>Content for Total Balance</div>
-          </Card>
-          <Card title="Goals">
-            <div>Content for Goals</div>
-          </Card>
+          <CardBalance />
+          <CardGoal />
           <Card title="Upcoming Bill">{billCard}</Card>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Recent Transaction card dengan data transaksi */}
           <Card title="Recent Transaction">
-            <div>
-              <div className="mb-4 flex space-x-2">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab}
-                    value={tab}
-                    onClick={() => setActiveTab(tab)} // Update activeTab on click
-                    className={
-                      activeTab === tab
-                        ? "px-4 font-bold border-b-4 border-primary text-primary"
-                        : "px-4 font-bold text-gray-01"
-                    }
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-              {transactionCard}
+            {transactionCard}
+            <div className="flex justify-between mt-4">
+              <button
+                className="bg-gray-300 p-2 rounded-lg"
+                onClick={handleBack}
+                disabled={currentPage === 1}
+              >
+                Back
+              </button>
+              <button
+                className="bg-primary text-white p-2 rounded-lg"
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
             </div>
           </Card>
 
           <div className="space-y-6">
-            <Card title="Statistics">
-              <div>Content for Statistics</div>
-            </Card>
+            <CardStatistic />
             <Card title="Expenses Breakdown">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {expenseCard}

@@ -1,19 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        primary: "#299D91",
+        primary: "#var(--color-primary)",
         secondary: "#525256",
-        defaultBlack: "#191919", 
+        defaultBlack: "#191919",
         gray: {
           "01": "#666666",
           "02": "#878787",
-          "03": "#9F9F9F", 
+          "03": "#9F9F9F",
           "05": "#E8E8E8",
           "06": "#F3F3F3",
         },
@@ -28,10 +25,10 @@ export default {
         },
       },
       fontFamily: {
-        body: ['Inter'],
-        poppins: ['Poppins'],
+        body: ["Inter"],
+        poppins: ["Poppins"],
       },
     },
   },
   plugins: [],
-}
+};
