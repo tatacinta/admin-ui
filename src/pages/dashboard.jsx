@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../component/Card";
 import MainLayout from "../component/Layout/MainLayout";
 import bills from "../component/Data/bills";
@@ -17,6 +17,10 @@ const DashboardPage = () => {
   // State untuk pagination Recent Transaction
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4; // Menampilkan 4 transaksi per halaman
+
+  // State untuk loading
+  const [loadingBills, setLoadingBills] = useState(true);
+  const [loadingTransactions, setLoadingTransactions] = useState(true);
 
   // Fungsi untuk mendapatkan data yang akan ditampilkan pada halaman tertentu
   const indexOfLastTransaction = currentPage * itemsPerPage;
@@ -41,6 +45,20 @@ const DashboardPage = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  // Simulasi pemanggilan data untuk Bills
+  useEffect(() => {
+    setTimeout(() => {
+      setLoadingBills(false); // Setelah 2 detik, data Bills dianggap sudah di-fetch
+    }, 2000); // Waktu simulasi 2 detik
+  }, []);
+
+  // Simulasi pemanggilan data untuk Transactions
+  useEffect(() => {
+    setTimeout(() => {
+      setLoadingTransactions(false); // Setelah 2 detik, data Transactions dianggap sudah di-fetch
+    }, 2000); // Waktu simulasi 2 detik
+  }, []);
 
   const billCard = bills.map((bill) => (
     <div key={bill.id} className="lg:flex justify-between pt-3 pb-3">
@@ -115,29 +133,47 @@ const DashboardPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <CardBalance />
           <CardGoal />
-          <Card title="Upcoming Bill">{billCard}</Card>
+
+          {/* Upcoming Bill Card with loader */}
+          <Card title="Upcoming Bill">
+            {loadingBills ? (
+              <div className="flex justify-center items-center h-full">
+                <div className="w-16 h-16 border-t-4 border-green-500 border-solid rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              billCard
+            )}
+          </Card>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Recent Transaction card dengan data transaksi */}
+          {/* Recent Transaction Card with loader */}
           <Card title="Recent Transaction">
-            {transactionCard}
-            <div className="flex justify-between mt-4">
-              <button
-                className="bg-gray-300 p-2 rounded-lg"
-                onClick={handleBack}
-                disabled={currentPage === 1}
-              >
-                Back
-              </button>
-              <button
-                className="bg-primary text-white p-2 rounded-lg"
-                onClick={handleNext}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </button>
-            </div>
+            {loadingTransactions ? (
+              <div className="flex justify-center items-center h-full">
+                <div className="w-16 h-16 border-t-4 border-green-500 border-solid rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              <>
+                {transactionCard}
+                <div className="flex justify-between mt-4">
+                  <button
+                    className="bg-gray-300 p-2 rounded-lg"
+                    onClick={handleBack}
+                    disabled={currentPage === 1}
+                  >
+                    Back
+                  </button>
+                  <button
+                    className="bg-primary text-white p-2 rounded-lg"
+                    onClick={handleNext}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
+              </>
+            )}
           </Card>
 
           <div className="space-y-6">

@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react"; // Make sure to import useEffect here
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
@@ -13,7 +14,6 @@ import {
   faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../Elements/Logo";
-import { useState } from "react";
 
 const Navbar = () => {
   const themes = [
@@ -27,6 +27,14 @@ const Navbar = () => {
   const [theme, setTheme] = useState(themes[0]);
   const [activeMenu, setActiveMenu] = useState("overview");
 
+  const location = useLocation();
+
+  // Update active menu based on current route
+  useEffect(() => {
+    const currentPath = location.pathname.split("/")[1];
+    setActiveMenu(currentPath || "overview");
+  }, [location]);
+
   const handleThemeChange = (selectedTheme) => {
     setTheme(selectedTheme);
   };
@@ -36,7 +44,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-800 text-special-bg2 sm:w-72 w-36 h-screen flex flex-col justify-between">
+    <nav className="fixed left-0 top-0 h-full bg-gray-800 text-special-bg2 w-72 flex flex-col justify-between z-50">
       <div className="flex-grow">
         <Link to="/">
           <div className="flex justify-center mb-10">
@@ -46,7 +54,9 @@ const Navbar = () => {
             onClick={() => handleMenuClick("overview")}
             className={`flex px-4 py-3 rounded-md ${
               activeMenu === "overview" ? `bg-[${theme.color}] text-white` : ""
-            }`}
+            } hover:bg-[${
+              theme.color
+            }] hover:opacity-70 hover:scale-105 hover:text-white transition-all duration-300`}
           >
             <FontAwesomeIcon icon={faHome} className="text-white" />
             <div className="ms-3 hidden sm:block">Overview</div>
@@ -58,7 +68,9 @@ const Navbar = () => {
             onClick={() => handleMenuClick("balances")}
             className={`flex px-4 py-3 rounded-md ${
               activeMenu === "balances" ? `bg-[${theme.color}] text-white` : ""
-            } hover:bg-[${theme.color}] hover:text-white`}
+            } hover:bg-[${
+              theme.color
+            }] hover:opacity-70 hover:scale-105 hover:text-white transition-all duration-300`}
           >
             <FontAwesomeIcon icon={faDollarSign} className="text-white" />
             <div className="ms-3 hidden sm:block">Balances</div>
@@ -72,7 +84,9 @@ const Navbar = () => {
               activeMenu === "transactions"
                 ? `bg-[${theme.color}] text-white`
                 : ""
-            } hover:bg-[${theme.color}] hover:text-white`}
+            } hover:bg-[${
+              theme.color
+            }] hover:opacity-70 hover:scale-105 hover:text-white transition-all duration-300`}
           >
             <FontAwesomeIcon icon={faExchangeAlt} className="text-white" />
             <div className="ms-3 hidden sm:block">Transactions</div>
@@ -84,7 +98,9 @@ const Navbar = () => {
             onClick={() => handleMenuClick("bills")}
             className={`flex px-4 py-3 rounded-md ${
               activeMenu === "bills" ? `bg-[${theme.color}] text-white` : ""
-            } hover:bg-[${theme.color}] hover:text-white`}
+            } hover:bg-[${
+              theme.color
+            }] hover:opacity-70 hover:scale-105 hover:text-white transition-all duration-300`}
           >
             <FontAwesomeIcon
               icon={faFileInvoiceDollar}
@@ -99,7 +115,9 @@ const Navbar = () => {
             onClick={() => handleMenuClick("expenses")}
             className={`flex px-4 py-3 rounded-md ${
               activeMenu === "expenses" ? `bg-[${theme.color}] text-white` : ""
-            } hover:bg-[${theme.color}] hover:text-white`}
+            } hover:bg-[${
+              theme.color
+            }] hover:opacity-70 hover:scale-105 hover:text-white transition-all duration-300`}
           >
             <FontAwesomeIcon icon={faMoneyBillWave} className="text-white" />
             <div className="ms-3 hidden sm:block">Expenses</div>
@@ -111,7 +129,9 @@ const Navbar = () => {
             onClick={() => handleMenuClick("goals")}
             className={`flex px-4 py-3 rounded-md ${
               activeMenu === "goals" ? `bg-[${theme.color}] text-white` : ""
-            } hover:bg-[${theme.color}] hover:text-white`}
+            } hover:bg-[${
+              theme.color
+            }] hover:opacity-70 hover:scale-105 hover:text-white transition-all duration-300`}
           >
             <FontAwesomeIcon icon={faBullseye} className="text-white" />
             <div className="ms-3 hidden sm:block">Goals</div>
@@ -123,7 +143,9 @@ const Navbar = () => {
             onClick={() => handleMenuClick("settings")}
             className={`flex px-4 py-3 rounded-md ${
               activeMenu === "settings" ? `bg-[${theme.color}] text-white` : ""
-            } hover:bg-[${theme.color}] hover:text-white`}
+            } hover:bg-[${
+              theme.color
+            }] hover:opacity-70 hover:scale-105 hover:text-white transition-all duration-300`}
           >
             <FontAwesomeIcon icon={faCog} className="text-white" />
             <div className="ms-3 hidden sm:block">Settings</div>
@@ -137,7 +159,9 @@ const Navbar = () => {
             onClick={() => handleMenuClick("logout")}
             className={`flex px-4 py-3 rounded-md ${
               activeMenu === "logout" ? `bg-[${theme.color}] text-white` : ""
-            } hover:bg-[${theme.color}] hover:text-white`}
+            } hover:bg-[${
+              theme.color
+            }] hover:opacity-70 hover:scale-105 hover:text-white transition-all duration-300`}
           >
             <FontAwesomeIcon icon={faSignOutAlt} className="text-white" />
             <div className="ms-3 hidden sm:block">Logout</div>

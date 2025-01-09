@@ -3,7 +3,7 @@ const Input = (props) => {
     type,
     placeholder,
     name,
-    variant = "bg-special-mainBg border border-gray-03",
+    variant = "bg-special-Bg border border-gray-03",
   } = props;
 
   return (

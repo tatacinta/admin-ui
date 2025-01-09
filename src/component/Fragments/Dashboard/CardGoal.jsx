@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { goals } from "../../Data/goals";
 import Card from "../../Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,18 +14,35 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const CardGoal = () => {
-  // Hitung Persentase Pencapaian
-  const progressPercentage = (goals.presentAmount / goals.targetAmount) * 100;
+  const [loading, setLoading] = useState(true); // Set loading state
+  const [data, setData] = useState(null); // State for data
 
-  // Pastikan progres tidak lebih dari 100 dan tidak kurang dari 0
+  useEffect(() => {
+    // Simulate fetching data from the backend with a timeout
+    setTimeout(() => {
+      setData(goals); // Replace with actual backend data fetching
+      setLoading(false); // Set loading to false when data is fetched
+    }, 2000); // Simulate 2 seconds of loading
+  }, []);
+
+  if (loading) {
+    // Render a loading animation while data is being fetched
+    return (
+      <div className="flex justify-center items-center h-full">
+        <div className="w-16 h-16 border-t-4 border-green-500 border-solid rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Calculate Progress Percentage
+  const progressPercentage = (data.presentAmount / data.targetAmount) * 100;
   const pointerValue = Math.min(Math.max(progressPercentage, 0), 100);
 
-  // Chart data dan options untuk chart gauge style
   const chartData = {
     datasets: [
       {
-        data: [pointerValue, 100 - pointerValue], // Progres dan sisanya
-        backgroundColor: ["#299D91", "#E8E8E8"], // Warna untuk progres dan sisa
+        data: [pointerValue, 100 - pointerValue], // Progress and remainder
+        backgroundColor: ["#299D91", "#E8E8E8"], // Progress and remainder colors
         borderWidth: 0,
         hoverOffset: 4,
       },
@@ -33,20 +51,20 @@ const CardGoal = () => {
 
   const chartOptions = {
     responsive: true,
-    rotation: -90, // Agar chart mulai dari bagian atas (seperti speedometer)
-    circumference: 180, // Setengah lingkaran untuk efek speedometer
-    cutout: "80%", // Untuk membuat lubang di tengah seperti speedometer
+    rotation: -90, // Start the chart from the top (like a speedometer)
+    circumference: 180, // Half-circle effect
+    cutout: "80%", // Hollow center like a speedometer
     plugins: {
       tooltip: {
-        enabled: false, // Menonaktifkan tooltip
+        enabled: false, // Disable tooltip
       },
       legend: {
-        display: false, // Menonaktifkan legend
+        display: false, // Disable legend
       },
     },
     elements: {
       arc: {
-        borderWidth: 0, // Menghilangkan border pada segment
+        borderWidth: 0, // Remove border from chart segments
       },
     },
   };
@@ -60,7 +78,7 @@ const CardGoal = () => {
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <span className="text-2xl font-bold mr-4">
-                ${goals.presentAmount}
+                ${data.presentAmount}
               </span>
               <div className="p-2 bg-gray-100 rounded-md cursor-pointer">
                 <FontAwesomeIcon icon={faEdit} />
@@ -81,7 +99,7 @@ const CardGoal = () => {
                   <span className="text-gray-500">Target Achieved</span>
                   <br />
                   <span className="font-bold text-xl">
-                    ${goals.targetAmount}
+                    ${data.targetAmount}
                   </span>
                 </div>
               </div>
@@ -92,7 +110,7 @@ const CardGoal = () => {
                   <span className="text-gray-500">This Month Target</span>
                   <br />
                   <span className="font-bold text-xl">
-                    ${goals.presentAmount}
+                    ${data.presentAmount}
                   </span>
                 </div>
               </div>

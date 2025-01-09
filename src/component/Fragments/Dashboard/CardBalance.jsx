@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Accounts from "../../Data/accounts";
 import Card from "../../Card";
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 const CardBalance = () => {
   // Menyimpan indeks data yang ditampilkan
   const [startIndex, setStartIndex] = useState(0);
+  const [loading, setLoading] = useState(true); // Menambahkan state untuk loading
   const itemsPerPage = 2; // Jumlah data per halaman
 
   // Mengambil data yang sesuai dengan startIndex dan itemsPerPage
@@ -15,6 +16,13 @@ const CardBalance = () => {
     startIndex,
     startIndex + itemsPerPage
   );
+
+  // Simulasi pemanggilan data dari backend
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false); // Setelah 2 detik, data dianggap sudah di-fetch
+    }, 2000); // Waktu simulasi 2 detik
+  }, []);
 
   // Fungsi untuk menambah data yang ditampilkan
   const loadMore = () => {
@@ -74,28 +82,37 @@ const CardBalance = () => {
 
   return (
     <Card title="Total Balance">
-      {balanceCard}
-      <div className="flex justify-between mt-4">
-        {/* Tombol Back */}
-        {startIndex > 0 && (
-          <button
-            onClick={goBack}
-            className="p-2 bg-secondary text-white rounded-md"
-          >
-            Back
-          </button>
-        )}
+      {loading ? (
+        <div className="flex justify-center items-center h-full">
+          {/* Loader Animation */}
+          <div className="w-16 h-16 border-t-4 border-green-500 border-solid rounded-full animate-spin"></div>
+        </div>
+      ) : (
+        <>
+          {balanceCard}
+          <div className="flex justify-between mt-4">
+            {/* Tombol Back */}
+            {startIndex > 0 && (
+              <button
+                onClick={goBack}
+                className="p-2 bg-secondary text-white rounded-md"
+              >
+                Back
+              </button>
+            )}
 
-        {/* Tombol Next */}
-        {startIndex + itemsPerPage < Accounts.length && (
-          <button
-            onClick={loadMore}
-            className="p-2 bg-primary text-white rounded-md"
-          >
-            Next
-          </button>
-        )}
-      </div>
+            {/* Tombol Next */}
+            {startIndex + itemsPerPage < Accounts.length && (
+              <button
+                onClick={loadMore}
+                className="p-2 bg-primary text-white rounded-md"
+              >
+                Next
+              </button>
+            )}
+          </div>
+        </>
+      )}
     </Card>
   );
 };
